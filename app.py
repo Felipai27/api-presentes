@@ -64,6 +64,10 @@ def remover_presente(id_presente):
     return jsonify({"erro": "Presente não encontrado"}), 404
 
 
+@app.route("/")
+def home():
+    return {"mensagem": "API de Presentes rodando com sucesso!"}
+
 
 if __name__ == "__main__":
     app.run(debug=True)
