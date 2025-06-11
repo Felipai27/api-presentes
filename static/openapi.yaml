@@ -1,0 +1,122 @@
+openapi: "3.0.1"
+info:
+  title: "API de Presentes"
+  version: "1.0.0"
+  description: "API REST para gerenciar uma lista de presentes."
+servers:
+  - url: "http://localhost:5000"
+    description: "Servidor local"
+paths:
+  "/":
+    get:
+      summary: "Status da API"
+      responses:
+        "200":
+          description: "API rodando com sucesso"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mensagem:
+                    type: string
+                    example: "API de Presentes rodando com sucesso!"
+  "/presentes":
+    get:
+      summary: "Lista todos os presentes"
+      responses:
+        "200":
+          description: "Lista de presentes"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Presente"
+    post:
+      summary: "Adiciona um novo presente"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PresenteInput"
+      responses:
+        "201":
+          description: "Presente criado"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Presente"
+  "/presentes/{id}":
+    parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        description: "ID do presente"
+        schema:
+          type: integer
+    put:
+      summary: "Atualiza um presente existente"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PresenteInput"
+      responses:
+        "200":
+          description: "Presente atualizado"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Presente"
+        "404":
+          description: "Presente não encontrado"
+    delete:
+      summary: "Remove um presente"
+      responses:
+        "200":
+          description: "Presente removido com sucesso"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mensagem:
+                    type: string
+                    example: "Presente removido com sucesso"
+        "404":
+          description: "Presente não encontrado"
+components:
+  schemas:
+    Presente:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nome:
+          type: string
+          example: "Bicicleta"
+        preco:
+          type: number
+          format: float
+          example: 350.0
+      required:
+        - id
+        - nome
+        - preco
+    PresenteInput:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: "Livro"
+        preco:
+          type: number
+          format: float
+          example: 45.0
+      required:
+        - nome
+        - preco
